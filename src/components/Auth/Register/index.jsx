@@ -1,13 +1,14 @@
-import {Link} from "react-router-dom";
-import {useState, useEffect} from "react";
-import axios from 'axios'
+import {Link, useNavigate} from "react-router-dom";
+import API from '../../../utils/axios';
+import {useState} from "react";
 
-const SignUp = () => {
+const Register = () => {
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [responseMessage, setResponseMessage] = useState("");
+    const navigate = useNavigate();
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -22,10 +23,11 @@ const SignUp = () => {
             return;
         }
         try {
-            const response = await axios.post('http://localhost:5000/api/signup', { name, email, password })
+            const response = await API.post('register', { name, email, password })
             setResponseMessage(response.data.message)
+            navigate('/login')
         } catch (err) {
-            console.error(err)
+            setResponseMessage(err.response?.data?.message || 'Error en el registro')
         }
     }
 
@@ -83,12 +85,13 @@ const SignUp = () => {
                             type={'submit'}
                         >Continuar
                         </button>
+                        {responseMessage && <p>{responseMessage}</p>}
                     </form>
-                    {responseMessage && <p>{responseMessage}</p>}
+                    
                 </div>
             </main>
         </>
     )
 }
 
-export {SignUp};
+export default Register;

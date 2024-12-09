@@ -1,13 +1,40 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useState } from "react";
+import API from "../../../utils/axios"
+import GoogleLoginButton from '../GoogleLoginButton'
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState('');
+    const navigate = useNavigate();
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
-        console.log('Iniciando sesión con: ', { email, password });
+        try {
+            const response = await API.post('/login', { email, password });
+            localStorage.setItem('token', response.data.token);
+            navigate('/users')
+            setMessage('Inicio de sesión exitoso');
+        } catch (error) {
+            setMessage(error.response?.data?.error || 'Error en el inicio de sesión');
+        }
+    };
+
+    const handleGoogleSuccess = async (credentialResponse) => {
+        try {
+            const response = await API.post('/google', {
+                token: credentialResponse.credential,
+            })
+            localStorage.setItem('token', response.data.token); // Almacenar token jwt
+            alert('Inicio de sesión exitoso')
+        } catch (error) {
+            console.error('Error al iniciar sesión con Google', error.message)
+        }
+    }
+
+    const handleGoogleError = () => {
+        console.error('Error al iniciar sesión con Google')
     }
 
     return (
@@ -39,12 +66,20 @@ const Login = () => {
                             />
                         </div>
                         <div className={"flex justify-between w-full"}>
-                            <Link to={"/signup"}>No tengo cuenta</Link>
+                            <Link to={"/register"}>No tengo cuenta</Link>
                             <Link to={"/recoverPass"}>Olvidé mi contraseña</Link>
                         </div>
+
+                        <GoogleLoginButton 
+                            className={"m-4  rounded-full flex items-center justify-center text-4xl font-bold w-1/2 h-12 p-0 bg-white text-[#1d1f36] focus:outline-none"}
+                            onSuccess={handleGoogleSuccess}
+                            onError={handleGoogleError}
+                        />
+
                         <button className={"mb-8  rounded-full flex items-center justify-center text-4xl font-bold w-1/2 h-12 p-0 bg-white text-[#1d1f36] focus:outline-none"}
                             type={"submit"}
                         >Continuar</button>
+                        {message && <p>{message}</p>}
                     </form>
                 </div>
             </main>
@@ -52,4 +87,4 @@ const Login = () => {
     )
 }
 
-export { Login }
+export default Login 

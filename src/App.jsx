@@ -12,7 +12,7 @@ import UsersPage from './components/UsersPage'
 
 function App() {
   return (
-    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={"641337571814-nakcm23og1268ts3b79srd8163utqv2o.apps.googleusercontent.com"}>
       <Router>
           <Routes>
               <Route path="/login" element={<Login />} />

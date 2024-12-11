@@ -107,7 +107,7 @@ function UsersPage() {
                                         />
                                     </div>
                                     <div className={"flex rounded-xl flex-col px-4 py-2 h-auto items-start bg-[#37445d] mb-3"}>
-                                        <label className={"text-slate-400 text-xm h-5"} htmlFor="password">CONTRASEÑA</label>
+                                        <label className={"text-slate-400 text-xm h-5"} htmlFor="password">Correo</label>
                                         <input
                                             className={"text-white focus:outline-none text-slate-400 w-full h-4 bg-transparent p-0 text-3xl active:border-0"}
                                             type="email"

@@ -23,7 +23,7 @@ const Login = () => {
 
     const handleGoogleSuccess = async (credentialResponse) => {
         try {
-            const response = await API.post('/google', {
+            const response = await API.get('/google', {
                 token: credentialResponse.credential,
             })
             localStorage.setItem('token', response.data.token); // Almacenar token jwt

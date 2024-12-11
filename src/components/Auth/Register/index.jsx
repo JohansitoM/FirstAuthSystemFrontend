@@ -25,6 +25,7 @@ const Register = () => {
         try {
             const response = await API.post('register', { name, email, password })
             setResponseMessage(response.data.message)
+            alert('Registro exitoso, verifica tu correo')
             navigate('/login')
         } catch (err) {
             setResponseMessage(err.response?.data?.message || 'Error en el registro')
